@@ -1,4 +1,5 @@
 const app = require('./config/server')
+const { on } = require('nodemon')
 
 const server = app.listen(80, function(){
     console.log('------------------------------')
@@ -6,4 +7,12 @@ const server = app.listen(80, function(){
     console.log('------------------------------')
 })
 
-require('socket.io').listen(server)
+const io = require('socket.io').listen(server)
+
+io.on('connection', function(socket) {
+   console.log('Usuário Conectou') 
+
+   socket.on('disconnect', function(){
+       console.log('Ususário desconectou')
+   })
+})
