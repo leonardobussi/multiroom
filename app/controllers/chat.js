@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator/check");
+const { emit } = require("../../config/server");
 
 module.exports.iniciaChat = function (application, req, res){
 
@@ -13,6 +14,12 @@ module.exports.iniciaChat = function (application, req, res){
         res.render("index", {validacao: erros}) 
         return ;
     }
+
+    application.get('io').emit(
+        'msgParaClient',
+        {apelido: dadosForm.apelido, mensagem: 'está conectado agora'}
+        )
+
 
     res.render('chat')
 }
